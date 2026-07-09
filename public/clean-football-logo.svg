@@ -1,19 +1,12 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Daily brief logo option</title>
+  <desc id="desc">A match card and football mark for a daily football briefing app.</desc>
   <rect width="512" height="512" rx="112" fill="#050505"/>
-  <path d="M110 118C110 105.85 119.85 96 132 96H380C392.15 96 402 105.85 402 118V394C402 406.15 392.15 416 380 416H132C119.85 416 110 406.15 110 394V118Z" fill="#111111" stroke="#27272A" stroke-width="10"/>
-  <path d="M134 140H378" stroke="#27272A" stroke-width="8" stroke-linecap="round"/>
-  <path d="M134 372H378" stroke="#27272A" stroke-width="8" stroke-linecap="round"/>
-  <path d="M256 96V416" stroke="#27272A" stroke-width="8" stroke-linecap="round"/>
-  <circle cx="256" cy="256" r="54" stroke="#27272A" stroke-width="8"/>
-  <path d="M151 322C189.5 257.5 236.5 220.5 317 191" stroke="#7CFF5B" stroke-width="18" stroke-linecap="round"/>
-  <path d="M290 183L329 187L302 216" stroke="#7CFF5B" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="172" cy="320" r="26" fill="#F6F7F8"/>
-  <path d="M172 294V346" stroke="#111111" stroke-width="6" stroke-linecap="round"/>
-  <path d="M146 320H198" stroke="#111111" stroke-width="6" stroke-linecap="round"/>
-  <path d="M154 302L190 338" stroke="#111111" stroke-width="6" stroke-linecap="round"/>
-  <path d="M190 302L154 338" stroke="#111111" stroke-width="6" stroke-linecap="round"/>
-  <circle cx="336" cy="184" r="16" fill="#6FCF97"/>
-  <circle cx="220" cy="246" r="10" fill="#6FCF97"/>
-  <circle cx="126" cy="106" r="8" fill="#7CFF5B"/>
-  <circle cx="386" cy="406" r="8" fill="#7CFF5B"/>
+  <rect x="108" y="118" width="296" height="276" rx="38" fill="#111111" stroke="#27272A" stroke-width="10"/>
+  <path d="M152 182H306M152 236H360M152 290H286" stroke="#F6F7F8" stroke-width="18" stroke-linecap="round"/>
+  <path d="M152 348H242" stroke="#7CFF5B" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="348" cy="340" r="56" fill="#7CFF5B"/>
+  <path d="M348 318L370 334L362 360H334L326 334L348 318Z" fill="#111111"/>
+  <path d="M348 318L348 294M370 334L392 326M362 360L376 382M334 360L320 382M326 334L304 326" stroke="#111111" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M314 303C334 288 362 288 382 303M303 356C308 380 328 396 348 396M393 356C388 380 368 396 348 396" stroke="#111111" stroke-width="9" stroke-linecap="round"/>
 </svg>

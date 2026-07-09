@@ -5,6 +5,8 @@
   <rect x="108" y="118" width="296" height="276" rx="38" fill="#111111" stroke="#27272A" stroke-width="10"/>
   <path d="M152 182H306M152 236H360M152 290H286" stroke="#F6F7F8" stroke-width="18" stroke-linecap="round"/>
   <path d="M152 348H242" stroke="#7CFF5B" stroke-width="18" stroke-linecap="round"/>
-  <circle cx="348" cy="340" r="54" fill="#7CFF5B"/>
-  <path d="M348 286V394M294 340H402M312 304L384 376M384 304L312 376" stroke="#111111" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="348" cy="340" r="56" fill="#7CFF5B"/>
+  <path d="M348 318L370 334L362 360H334L326 334L348 318Z" fill="#111111"/>
+  <path d="M348 318L348 294M370 334L392 326M362 360L376 382M334 360L320 382M326 334L304 326" stroke="#111111" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M314 303C334 288 362 288 382 303M303 356C308 380 328 396 348 396M393 356C388 380 368 396 348 396" stroke="#111111" stroke-width="9" stroke-linecap="round"/>
 </svg>
