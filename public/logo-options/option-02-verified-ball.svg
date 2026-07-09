@@ -1,0 +1,10 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Verified ball logo option</title>
+  <desc id="desc">A clean football icon with a verified check mark, built for news trust.</desc>
+  <rect width="512" height="512" rx="112" fill="#F6F7F8"/>
+  <circle cx="256" cy="256" r="148" fill="#111111"/>
+  <path d="M256 118V394M118 256H394" stroke="#27272A" stroke-width="10" stroke-linecap="round" opacity=".9"/>
+  <path d="M158 196C212 226 300 226 354 196M158 316C212 286 300 286 354 316" stroke="#27272A" stroke-width="10" stroke-linecap="round"/>
+  <path d="M184 258L235 309L334 207" stroke="#6FCF97" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="256" cy="256" r="148" stroke="#111111" stroke-width="14"/>
+</svg>

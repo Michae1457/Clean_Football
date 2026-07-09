@@ -1,0 +1,11 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Match pulse logo option</title>
+  <desc id="desc">A compact football pitch and live pulse mark for match tracking.</desc>
+  <rect width="512" height="512" rx="112" fill="#101010"/>
+  <rect x="104" y="130" width="304" height="252" rx="42" fill="#F6F7F8"/>
+  <path d="M256 144V368" stroke="#D9DEE3" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="256" cy="256" r="42" stroke="#D9DEE3" stroke-width="10"/>
+  <path d="M132 292H184L206 224L250 338L292 206L326 292H380" stroke="#111111" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="380" cy="292" r="28" fill="#6FCF97"/>
+  <path d="M368 280L392 304M392 280L368 304" stroke="#111111" stroke-width="7" stroke-linecap="round"/>
+</svg>

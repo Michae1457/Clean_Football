@@ -1,3 +1,4 @@
+import { PushSettings } from "@/components/settings/push-settings";
 import { ThemeSettings } from "@/components/settings/theme-settings";
 
 const leagues = ["英超", "欧冠", "西甲"];
@@ -7,6 +8,7 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6">
       <ThemeSettings />
+      <PushSettings />
 
       <section className="rounded-lg border bg-card p-4">
         <h2 className="text-lg font-semibold text-text">关注联赛</h2>

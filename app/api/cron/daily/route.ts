@@ -3,6 +3,7 @@ import { generateDailyBrief } from "@/jobs/generateDailyBrief";
 import { fetchMatches } from "@/jobs/fetchMatches";
 import { fetchNews } from "@/jobs/fetchNews";
 import { getAppDateString } from "@/lib/datetime";
+import { sendDailyBriefNotification } from "@/lib/push";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 120;
@@ -15,6 +16,7 @@ type CronPayload = {
     brief?: unknown;
     matches?: unknown;
     news?: unknown;
+    push?: unknown;
   };
   ok: boolean;
   schedule: string | null;
@@ -77,11 +79,18 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    payload.jobs.brief = await generateDailyBrief({
+    const briefResult = await generateDailyBrief({
       date,
       dryRun: false,
       useAi: useBriefAi
     });
+    payload.jobs.brief = briefResult;
+
+    try {
+      payload.jobs.push = await sendDailyBriefNotification(briefResult.brief, date);
+    } catch (error) {
+      payload.jobs.push = { error: toErrorMessage(error) };
+    }
   } catch (error) {
     payload.jobs.brief = { error: toErrorMessage(error) };
     payload.errors.push(`brief:${toErrorMessage(error)}`);

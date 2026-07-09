@@ -1,0 +1,9 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">CF monogram logo option</title>
+  <desc id="desc">A bold CF monogram with a football pitch reference.</desc>
+  <rect width="512" height="512" rx="112" fill="#0B0B0B"/>
+  <path d="M350 156C326 132 292 118 254 118C176 118 116 178 116 256C116 334 176 394 254 394C294 394 328 380 352 354" stroke="#F6F7F8" stroke-width="34" stroke-linecap="round"/>
+  <path d="M262 162H374M262 256H354M262 162V350" stroke="#7CFF5B" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="174" cy="256" r="22" fill="#F6F7F8"/>
+  <path d="M164 246L184 266M184 246L164 266" stroke="#111111" stroke-width="6" stroke-linecap="round"/>
+</svg>

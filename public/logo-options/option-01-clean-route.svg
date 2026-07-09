@@ -1,0 +1,13 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Clean route logo option</title>
+  <desc id="desc">A minimal dark football pitch mark with a clean green route curve.</desc>
+  <rect width="512" height="512" rx="112" fill="#050505"/>
+  <rect x="112" y="96" width="288" height="320" rx="36" fill="#111111" stroke="#2A2A2E" stroke-width="10"/>
+  <path d="M256 104V408" stroke="#2A2A2E" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="256" cy="256" r="50" stroke="#2A2A2E" stroke-width="8"/>
+  <path d="M166 320C198 262 242 222 336 192" stroke="#7CFF5B" stroke-width="24" stroke-linecap="round"/>
+  <path d="M304 178L349 189L315 220" stroke="#7CFF5B" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="168" cy="320" r="24" fill="#F6F7F8"/>
+  <path d="M156 308L180 332M180 308L156 332" stroke="#111111" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="340" cy="190" r="12" fill="#F6F7F8"/>
+</svg>

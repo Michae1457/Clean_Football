@@ -63,3 +63,15 @@
 - [x] 补充 loading、empty、error 状态。
 - [x] 移动端适配检查。
 - [x] 写 README：如何启动、如何配置 API key、如何交给 Codex 继续开发。
+
+## Phase 8：PWA 与 iOS 推送
+
+- [x] 添加 Web App Manifest 与 iOS 主屏幕图标。
+- [x] 注册 Service Worker。
+- [x] 创建 push_subscriptions 数据表 migration。
+- [x] 实现推送订阅 / 取消订阅 API。
+- [x] 在 Settings 页面添加每日推送开关和测试通知。
+- [x] 在每日 cron 生成简报后发送 Web Push。
+- [x] 补充 VAPID key 配置说明。
+- [ ] 增加按关注联赛 / 球队的个性化推送。
+- [ ] 增加赛前提醒推送。

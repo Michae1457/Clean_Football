@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Clean Football Logo Options</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f6f7f8;
+        --card: #ffffff;
+        --text: #111111;
+        --muted: #667085;
+        --border: #e5e7eb;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #050505;
+          --card: #111111;
+          --text: #f6f7f8;
+          --muted: #a1a1aa;
+          --border: #27272a;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+      }
+
+      main {
+        width: min(1120px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 40px 0;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 28px;
+        line-height: 1.2;
+      }
+
+      p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+        margin-top: 28px;
+      }
+
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--card);
+        padding: 16px;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 22%;
+      }
+
+      h2 {
+        margin: 14px 0 0;
+        font-size: 15px;
+      }
+
+      .note {
+        min-height: 52px;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Clean Football Logo Options</h1>
+      <p>Five first-pass directions. These are SVG drafts, so the chosen one can be tuned precisely.</p>
+      <section class="grid" aria-label="Logo options">
+        <article class="card">
+          <img src="./option-01-clean-route.svg" alt="Option 01 clean route logo" />
+          <h2>01 Clean Route</h2>
+          <p class="note">Closest to the current logo, but simpler and more app-icon friendly.</p>
+        </article>
+        <article class="card">
+          <img src="./option-02-verified-ball.svg" alt="Option 02 verified ball logo" />
+          <h2>02 Verified Ball</h2>
+          <p class="note">More about trust, verification, and clean football information.</p>
+        </article>
+        <article class="card">
+          <img src="./option-03-cf-monogram.svg" alt="Option 03 CF monogram logo" />
+          <h2>03 CF Monogram</h2>
+          <p class="note">Bolder brand mark, less literal, stronger as an app icon.</p>
+        </article>
+        <article class="card">
+          <img src="./option-04-daily-brief.svg" alt="Option 04 daily brief logo" />
+          <h2>04 Daily Brief</h2>
+          <p class="note">Leans into the 9am brief, news cards, and football summaries.</p>
+        </article>
+        <article class="card">
+          <img src="./option-05-match-pulse.svg" alt="Option 05 match pulse logo" />
+          <h2>05 Match Pulse</h2>
+          <p class="note">More energetic and schedule-focused, with a live match signal.</p>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

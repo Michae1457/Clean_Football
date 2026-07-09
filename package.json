@@ -15,7 +15,8 @@
     "job:fetch-news:no-ai": "tsx jobs/fetchNews.ts --no-ai",
     "job:generate-brief": "tsx jobs/generateDailyBrief.ts",
     "job:generate-brief:dry": "tsx jobs/generateDailyBrief.ts --dry-run --no-ai",
-    "job:generate-brief:no-ai": "tsx jobs/generateDailyBrief.ts --no-ai"
+    "job:generate-brief:no-ai": "tsx jobs/generateDailyBrief.ts --no-ai",
+    "push:vapid": "web-push generate-vapid-keys"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.2",
@@ -29,12 +30,14 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
+    "@types/web-push": "^3.6.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
     "eslint-config-next": "^15.1.3",

@@ -98,5 +98,18 @@ Prompts:
 1. `fetchMatches`
 2. `fetchNews`
 3. `generateDailyBrief`
+4. `sendDailyBriefNotification`
 
 The route is configured in `vercel.json` to run at `0 1 * * *`, which is 09:00 in Asia/Shanghai. Production requests must include `Authorization: Bearer <CRON_SECRET>`.
+
+Daily push notifications are skipped unless all push env vars are configured:
+
+- `NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY`
+- `WEB_PUSH_PRIVATE_KEY`
+- `WEB_PUSH_SUBJECT`
+
+Generate VAPID keys with:
+
+```bash
+npm run push:vapid
+```

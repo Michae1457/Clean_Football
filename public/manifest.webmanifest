@@ -1,0 +1,27 @@
+{
+  "name": "Clean Football",
+  "short_name": "Clean Football",
+  "description": "中文优先、少噪音、不赌球的足球信息 PWA。",
+  "start_url": "/today",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/clean-football-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["sports", "news", "productivity"],
+  "lang": "zh-CN"
+}
