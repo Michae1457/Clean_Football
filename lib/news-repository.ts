@@ -1,6 +1,6 @@
 import { createSupabaseAnonClient, hasSupabaseAnonConfig } from "@/lib/db";
 import { articles as mockArticles } from "@/lib/mock-data";
-import type { Article } from "@/lib/types";
+import type { Article, ArticleDetail } from "@/lib/types";
 
 type ArticleRow = {
   id: string;
@@ -11,6 +11,13 @@ type ArticleRow = {
   fetched_at: string;
   tag: string;
   sources: { name: string } | { name: string }[] | null;
+};
+
+type ArticleDetailRow = ArticleRow & {
+  content_snippet: string | null;
+  language: string;
+  original_summary: string | null;
+  original_title: string | null;
 };
 
 export async function getLatestArticles(limit = 30): Promise<Article[]> {
@@ -40,6 +47,43 @@ export async function getLatestArticles(limit = 30): Promise<Article[]> {
   }
 }
 
+export async function getArticleById(id: string): Promise<ArticleDetail | null> {
+  if (!hasSupabaseAnonConfig()) {
+    const article = mockArticles.find((item) => item.id === id);
+
+    return article
+      ? {
+          ...article,
+          contentSnippet: article.summary,
+          fetchedAt: article.publishedAt,
+          language: "zh-CN",
+          originalSummary: article.summary,
+          originalTitle: article.title
+        }
+      : null;
+  }
+
+  try {
+    const supabase = createSupabaseAnonClient();
+    const { data, error } = await supabase
+      .from("articles")
+      .select(
+        "id, url, title, original_title, summary_zh, original_summary, content_snippet, language, published_at, fetched_at, tag, sources(name)"
+      )
+      .eq("id", id)
+      .maybeSingle();
+
+    if (error) {
+      throw error;
+    }
+
+    return data ? toArticleDetail(data as ArticleDetailRow) : null;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to load article detail.");
+  }
+}
+
 function toArticle(row: ArticleRow): Article {
   return {
     id: row.id,
@@ -49,6 +93,17 @@ function toArticle(row: ArticleRow): Article {
     publishedAt: formatPublishedAt(row.published_at ?? row.fetched_at),
     tag: row.tag,
     url: row.url
+  };
+}
+
+function toArticleDetail(row: ArticleDetailRow): ArticleDetail {
+  return {
+    ...toArticle(row),
+    contentSnippet: row.content_snippet ?? undefined,
+    fetchedAt: formatPublishedAt(row.fetched_at),
+    language: row.language,
+    originalSummary: row.original_summary ?? undefined,
+    originalTitle: row.original_title ?? undefined
   };
 }
 

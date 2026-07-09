@@ -26,6 +26,14 @@ export type Article = {
   url?: string;
 };
 
+export type ArticleDetail = Article & {
+  contentSnippet?: string;
+  fetchedAt: string;
+  language: string;
+  originalSummary?: string;
+  originalTitle?: string;
+};
+
 export type DailyBrief = {
   date: string;
   title: string;

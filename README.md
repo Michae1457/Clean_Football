@@ -114,6 +114,14 @@ npm run job:fetch-news:dry
 npm run job:fetch-news
 ```
 
+新闻页也提供手动刷新按钮，会调用 `/api/news/refresh` 即时拉取 RSS。可配置：
+
+```bash
+NEWS_REFRESH_LIMIT_PER_SOURCE=8
+NEWS_REFRESH_COOLDOWN_SECONDS=300
+NEWS_REFRESH_USE_AI=true
+```
+
 赛程：
 
 ```bash

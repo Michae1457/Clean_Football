@@ -1,9 +1,10 @@
+import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import type { Article } from "@/lib/types";
 
 export function ArticleCard({ article }: { article: Article }) {
   return (
-    <article className="rounded-lg border bg-card p-4">
+    <article className="rounded-lg border bg-card p-4 transition-colors hover:border-accent">
       <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
         <div className="flex min-w-0 max-w-full items-center gap-2">
           <span className="rounded-full bg-accent px-2 py-1 font-medium text-black">
@@ -13,10 +14,16 @@ export function ArticleCard({ article }: { article: Article }) {
         </div>
         <span className="shrink-0 font-mono text-muted">{article.publishedAt}</span>
       </div>
-      <h2 className="mt-4 text-lg font-semibold leading-snug text-text">
-        {article.title}
-      </h2>
-      <p className="mt-3 text-sm leading-6 text-muted">{article.summary}</p>
+      <Link
+        aria-label={`阅读新闻：${article.title}`}
+        className="mt-4 block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        href={`/news/${article.id}`}
+      >
+        <h2 className="text-lg font-semibold leading-snug text-text">
+          {article.title}
+        </h2>
+        <p className="mt-3 text-sm leading-6 text-muted">{article.summary}</p>
+      </Link>
       {article.url ? (
         <a
           className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-text transition-colors hover:text-accent"

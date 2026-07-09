@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MessageCircle, Newspaper, Settings, Sparkles, Trophy } from "lucide-react";
+import { NewsRefreshButton } from "@/components/news/news-refresh-button";
 import { cn } from "@/lib/utils";
 
 const pageMeta: Record<string, { title: string; eyebrow: string }> = {
@@ -22,11 +23,14 @@ const navItems = [
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const meta = pageMeta[pathname] ?? pageMeta["/today"];
+  const meta =
+    pageMeta[pathname] ??
+    (pathname.startsWith("/news/") ? pageMeta["/news"] : pageMeta["/today"]);
+  const showNewsRefresh = pathname === "/news";
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-3xl flex-col px-4">
-      <header className="sticky top-0 z-20 -mx-4 border-b bg-background/88 px-4 py-4 backdrop-blur">
+    <div className="mx-auto flex h-[100dvh] w-full max-w-3xl flex-col overflow-hidden px-4">
+      <header className="z-20 -mx-4 shrink-0 border-b bg-background/88 px-4 py-4 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3">
           <div className="min-w-0">
             <p className="text-xs font-medium text-muted">{meta.eyebrow}</p>
@@ -34,35 +38,40 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               {meta.title}
             </h1>
           </div>
-          <Link
-            aria-label="打开设置"
-            className={cn(
-              "inline-flex size-10 shrink-0 items-center justify-center rounded-lg border bg-card text-muted transition-colors hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-              pathname === "/settings" && "border-accent text-text"
-            )}
-            href="/settings"
-          >
-            <Settings className="size-5" />
-          </Link>
+          <div className="flex shrink-0 items-start gap-2">
+            {showNewsRefresh ? <NewsRefreshButton /> : null}
+            <Link
+              aria-label="打开设置"
+              className={cn(
+                "inline-flex size-10 shrink-0 items-center justify-center rounded-lg border bg-card text-muted transition-colors hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                pathname === "/settings" && "border-accent text-text"
+              )}
+              href="/settings"
+            >
+              <Settings className="size-5" />
+            </Link>
+          </div>
         </div>
       </header>
 
       <main
         className={cn(
-          "flex-1",
+          "min-h-0 flex-1 overscroll-contain",
           pathname === "/agent"
-            ? "flex min-h-0 overflow-hidden pb-[calc(5.75rem+env(safe-area-inset-bottom))] pt-4"
-            : "pb-24 pt-5"
+            ? "flex overflow-hidden pt-4"
+            : "overflow-y-auto py-5"
         )}
       >
         {children}
       </main>
 
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/92 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur">
+      <nav className="-mx-4 shrink-0 border-t bg-background/92 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur">
         <div className="mx-auto grid max-w-3xl grid-cols-4 gap-2">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const active = pathname === item.href;
+            const active =
+              pathname === item.href ||
+              (item.href !== "/today" && pathname.startsWith(`${item.href}/`));
 
             return (
               <Link
