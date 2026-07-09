@@ -38,7 +38,9 @@ export function DailyBriefCard({ brief }: { brief: DailyBrief | null }) {
           <CheckCircle2 className="size-5" />
         </div>
       </div>
-      <p className="mt-4 text-base leading-7 text-text">{brief.summary}</p>
+      <p className="mt-4 whitespace-pre-line text-base leading-7 text-text">
+        {brief.summary}
+      </p>
       <div className="mt-5 space-y-3">
         {brief.bullets.map((bullet) => (
           <div className="flex gap-3 text-sm leading-6" key={bullet}>

@@ -303,13 +303,9 @@ function generateFallbackBrief(context: BriefContext): GeneratedBrief {
       : "最新新闻暂时不多，稍后可以先跑新闻同步。";
 
   return {
-    bullets: [
-      truncate(matchLine, 60),
-      truncate(resultLine, 60),
-      truncate(newsLine, 60)
-    ],
+    bullets: [matchLine, resultLine, newsLine],
     provider: "fallback",
-    summary: truncate([matchLine, resultLine, newsLine].join(" "), 500),
+    summary: [matchLine, resultLine, newsLine].join(" "),
     title: "今日足球简报"
   };
 }
@@ -329,7 +325,6 @@ function normalizeGeneratedBrief(
     ? parsed.bullets
         .filter((bullet): bullet is string => typeof bullet === "string")
         .slice(0, 5)
-        .map((bullet) => truncate(bullet, 80))
     : [];
 
   return {
@@ -338,11 +333,11 @@ function normalizeGeneratedBrief(
     provider,
     summary:
       typeof parsed.summary === "string"
-        ? truncate(parsed.summary, 500)
+        ? parsed.summary.trim()
         : "今日数据暂时不多，建议稍后重新生成简报。",
     title:
       typeof parsed.title === "string"
-        ? truncate(parsed.title, 40)
+        ? parsed.title.trim()
         : "今日足球简报"
   };
 }
@@ -427,10 +422,6 @@ function extractJson(content: string) {
   }
 
   return trimmed.slice(start, end + 1);
-}
-
-function truncate(value: string, maxLength: number) {
-  return value.length <= maxLength ? value : `${value.slice(0, maxLength - 1)}…`;
 }
 
 function parseOptions(argv: string[]): GenerateDailyBriefOptions {
