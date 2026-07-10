@@ -14,6 +14,7 @@ import type { Article, Match } from "@/lib/types";
 
 export type AgentReply = {
   content: string;
+  error?: string;
   mode: "ai" | "fallback";
   model?: string;
   provider?: string;
@@ -35,7 +36,8 @@ export async function answerAgentQuestion({
       agentId: profile.id,
       messages: buildAiMessages(profile, messages, context),
       task: "agent",
-      temperature: profile.id === "predictor" ? 0.15 : 0.25
+      temperature: profile.id === "predictor" ? 0.15 : 0.25,
+      throwOnDisabled: true
     });
 
     if (completion?.content) {
@@ -48,6 +50,11 @@ export async function answerAgentQuestion({
     }
   } catch (error) {
     console.error(error);
+    return {
+      content: buildFallbackAnswer(profile, latestQuestion, context),
+      error: toUserFacingError(error),
+      mode: "fallback"
+    };
   }
 
   return {
@@ -231,4 +238,12 @@ function isSummaryQuestion(question: string) {
 
 function bulletSummary(bullets: string[]) {
   return bullets.length > 0 ? bullets.map((bullet) => `- ${bullet}`).join("\n") : "";
+}
+
+function toUserFacingError(error: unknown) {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return String(error);
 }

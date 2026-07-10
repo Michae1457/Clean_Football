@@ -147,6 +147,7 @@ RSSHub 只在配置 `RSSHUB_BASE_URL` 后启用第三方中文源，例如虎扑
 - OpenAI
 - OpenRouter
 - DeepSeek
+- Doubao / Volcengine Ark
 - Qwen / DashScope
 - 自定义 OpenAI-compatible 网关
 
@@ -163,6 +164,16 @@ AI_ENABLE_DAILY_BRIEF=true
 AI_ENABLE_AGENT=true
 ```
 
+中文摘要和每日简报默认跟随全局 `AI_PROVIDER` / `AI_MODEL`。如果要单独切换，可以覆盖任务级配置：
+
+```bash
+ARTICLE_SUMMARY_AI_PROVIDER=qwen
+ARTICLE_SUMMARY_AI_MODEL=qwen-plus
+
+DAILY_BRIEF_AI_PROVIDER=doubao
+DAILY_BRIEF_AI_MODEL=你的火山方舟 endpoint id 或模型名
+```
+
 每个 Agent 可单独配置 provider 和 model：
 
 ```bash
@@ -174,7 +185,20 @@ AGENT_TACTICIAN_MODEL=deepseek-v4-flash
 
 AGENT_PREDICTOR_PROVIDER=openrouter
 AGENT_PREDICTOR_MODEL=~openai/gpt-latest
+
+AGENT_FRIEND_PROVIDER=doubao
+AGENT_FRIEND_MODEL=你的火山方舟 endpoint id 或模型名
 ```
+
+豆包 / 火山方舟使用 OpenAI-compatible 接口：
+
+```bash
+DOUBAO_API_KEY=
+DOUBAO_BASE_URL=https://ark.cn-beijing.volces.com/api/v3
+DOUBAO_MODEL=你的火山方舟 endpoint id 或模型名
+```
+
+OpenRouter 的 `OPENROUTER_SITE_URL` 会作为 `HTTP-Referer` 请求头传给 OpenRouter，用来标识你的站点来源；线上可以填 `https://clean-football.vercel.app`，本地开发可以留空。
 
 Prompt 位置：
 

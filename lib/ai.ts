@@ -3,6 +3,7 @@ export type AiProvider =
   | "openai"
   | "openrouter"
   | "deepseek"
+  | "doubao"
   | "qwen"
   | "custom";
 
@@ -19,6 +20,7 @@ export type ChatCompletionOptions = {
   agentId?: string;
   temperature?: number;
   responseFormat?: "json_object";
+  throwOnDisabled?: boolean;
 };
 
 export type ChatCompletionResult = {
@@ -51,6 +53,12 @@ const providerDefaults: Record<
     model: "deepseek-v4-flash",
     modelEnv: "DEEPSEEK_MODEL"
   },
+  doubao: {
+    baseUrl: "https://ark.cn-beijing.volces.com/api/v3",
+    keyEnv: "DOUBAO_API_KEY",
+    model: "doubao-seed-1-6",
+    modelEnv: "DOUBAO_MODEL"
+  },
   openai: {
     baseUrl: "https://api.openai.com/v1",
     keyEnv: "OPENAI_API_KEY",
@@ -78,6 +86,9 @@ export async function createChatCompletion(
 
   if (!config.enabled) {
     warnOnce(`AI disabled for ${options.task}: ${config.reason}`);
+    if (options.throwOnDisabled) {
+      throw new Error(`AI disabled for ${options.task}: ${config.reason}`);
+    }
     return null;
   }
 
@@ -129,8 +140,10 @@ export function resolveAiConfig(task: AiTask, agentId?: string): ResolvedAiConfi
   }
 
   const agentPrefix = task === "agent" && agentId ? toAgentEnvPrefix(agentId) : null;
+  const taskPrefix = toTaskEnvPrefix(task);
   const provider = normalizeProvider(
-    (agentPrefix ? process.env[`${agentPrefix}_PROVIDER`] : undefined) ??
+    readScopedEnv(agentPrefix, "PROVIDER") ??
+      readScopedEnv(taskPrefix, "PROVIDER") ??
       process.env.AI_PROVIDER
   );
 
@@ -139,28 +152,33 @@ export function resolveAiConfig(task: AiTask, agentId?: string): ResolvedAiConfi
   }
 
   if (provider === "custom") {
-    return resolveCustomProvider(agentPrefix);
+    return resolveCustomProvider(agentPrefix, taskPrefix);
   }
 
-  return resolvePresetProvider(provider, agentPrefix);
+  return resolvePresetProvider(provider, agentPrefix, taskPrefix);
 }
 
 function resolvePresetProvider(
   provider: Exclude<AiProvider, "off" | "custom">,
-  agentPrefix: string | null
+  agentPrefix: string | null,
+  taskPrefix: string
 ): ResolvedAiConfig {
   const preset = providerDefaults[provider];
   const explicitBaseUrl =
-    readAgentEnv(agentPrefix, "BASE_URL") || readProviderEnv(provider, "BASE_URL");
+    readScopedEnv(agentPrefix, "BASE_URL") ||
+    readScopedEnv(taskPrefix, "BASE_URL") ||
+    readProviderEnv(provider, "BASE_URL");
   const baseUrl = explicitBaseUrl || process.env.AI_BASE_URL || preset.baseUrl;
   const apiKey =
-    readAgentEnv(agentPrefix, "API_KEY") ||
+    readScopedEnv(agentPrefix, "API_KEY") ||
+    readScopedEnv(taskPrefix, "API_KEY") ||
     readProviderEnv(provider, "API_KEY") ||
     process.env[preset.keyEnv] ||
     process.env.AI_API_KEY ||
     legacyOpenAiValue(provider, "OPENAI_API_KEY");
   const model = sanitizeModel(
-    readAgentEnv(agentPrefix, "MODEL") ||
+    readScopedEnv(agentPrefix, "MODEL") ||
+      readScopedEnv(taskPrefix, "MODEL") ||
       readProviderEnv(provider, "MODEL") ||
       process.env[preset.modelEnv] ||
       process.env.AI_MODEL ||
@@ -178,13 +196,24 @@ function resolvePresetProvider(
   });
 }
 
-function resolveCustomProvider(agentPrefix: string | null): ResolvedAiConfig {
+function resolveCustomProvider(
+  agentPrefix: string | null,
+  taskPrefix: string
+): ResolvedAiConfig {
   return validateConfig({
-    apiKey: readAgentEnv(agentPrefix, "API_KEY") || process.env.AI_API_KEY,
-    baseUrl: readAgentEnv(agentPrefix, "BASE_URL") || process.env.AI_BASE_URL,
+    apiKey:
+      readScopedEnv(agentPrefix, "API_KEY") ||
+      readScopedEnv(taskPrefix, "API_KEY") ||
+      process.env.AI_API_KEY,
+    baseUrl:
+      readScopedEnv(agentPrefix, "BASE_URL") ||
+      readScopedEnv(taskPrefix, "BASE_URL") ||
+      process.env.AI_BASE_URL,
     extraHeaders: {},
     model: sanitizeModel(
-      readAgentEnv(agentPrefix, "MODEL") || process.env.AI_MODEL,
+      readScopedEnv(agentPrefix, "MODEL") ||
+        readScopedEnv(taskPrefix, "MODEL") ||
+        process.env.AI_MODEL,
       "gpt-4o-mini"
     ),
     provider: "custom"
@@ -234,6 +263,7 @@ function normalizeProvider(value: string | undefined): AiProvider {
     provider === "openai" ||
     provider === "openrouter" ||
     provider === "deepseek" ||
+    provider === "doubao" ||
     provider === "qwen" ||
     provider === "custom"
   ) {
@@ -272,15 +302,31 @@ function readProviderEnv(provider: AiProvider, suffix: string) {
     return value || process.env.DASHSCOPE_BASE_URL;
   }
 
+  if (provider === "doubao" && suffix === "API_KEY") {
+    return value || process.env.ARK_API_KEY || process.env.VOLCENGINE_API_KEY;
+  }
+
   return value;
 }
 
-function readAgentEnv(agentPrefix: string | null, suffix: string) {
-  return agentPrefix ? process.env[`${agentPrefix}_${suffix}`] : undefined;
+function readScopedEnv(prefix: string | null, suffix: string) {
+  return prefix ? process.env[`${prefix}_${suffix}`] : undefined;
 }
 
 function toAgentEnvPrefix(agentId: string) {
   return `AGENT_${agentId.replace(/[^a-zA-Z0-9]+/g, "_").toUpperCase()}`;
+}
+
+function toTaskEnvPrefix(task: AiTask) {
+  if (task === "article-summary") {
+    return "ARTICLE_SUMMARY_AI";
+  }
+
+  if (task === "daily-brief") {
+    return "DAILY_BRIEF_AI";
+  }
+
+  return "AGENT_AI";
 }
 
 function legacyOpenAiValue(provider: AiProvider, envName: string) {

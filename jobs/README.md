@@ -23,12 +23,13 @@ Useful flags:
 
 Optional AI config for English-to-Chinese summaries:
 
-- `AI_PROVIDER`, one of `off`, `openai`, `openrouter`, `deepseek`, `qwen`, `custom`
+- `AI_PROVIDER`, one of `off`, `openai`, `openrouter`, `deepseek`, `doubao`, `qwen`, `custom`
 - `AI_API_KEY`
 - `AI_BASE_URL`
 - `AI_MODEL`
+- `ARTICLE_SUMMARY_AI_PROVIDER`, `ARTICLE_SUMMARY_AI_MODEL`, `ARTICLE_SUMMARY_AI_API_KEY`, `ARTICLE_SUMMARY_AI_BASE_URL` to override only article summaries
 - `AI_ENABLE_ARTICLE_SUMMARY=false` to disable only article summaries
-- Provider-specific keys such as `OPENROUTER_API_KEY`, `DEEPSEEK_API_KEY`, `QWEN_API_KEY`, `DASHSCOPE_API_KEY`, or legacy `OPENAI_API_KEY`
+- Provider-specific keys such as `OPENROUTER_API_KEY`, `DEEPSEEK_API_KEY`, `DOUBAO_API_KEY`, `QWEN_API_KEY`, `DASHSCOPE_API_KEY`, or legacy `OPENAI_API_KEY`
 
 Optional for Chinese third-party feeds:
 
@@ -73,12 +74,13 @@ Required for writes:
 
 Optional for AI generation:
 
-- `AI_PROVIDER`, one of `off`, `openai`, `openrouter`, `deepseek`, `qwen`, `custom`
+- `AI_PROVIDER`, one of `off`, `openai`, `openrouter`, `deepseek`, `doubao`, `qwen`, `custom`
 - `AI_API_KEY`
 - `AI_BASE_URL`
 - `AI_MODEL`
+- `DAILY_BRIEF_AI_PROVIDER`, `DAILY_BRIEF_AI_MODEL`, `DAILY_BRIEF_AI_API_KEY`, `DAILY_BRIEF_AI_BASE_URL` to override only daily brief generation
 - `AI_ENABLE_DAILY_BRIEF=false` to disable only daily brief generation
-- Provider-specific keys such as `OPENROUTER_API_KEY`, `DEEPSEEK_API_KEY`, `QWEN_API_KEY`, `DASHSCOPE_API_KEY`, or legacy `OPENAI_API_KEY`
+- Provider-specific keys such as `OPENROUTER_API_KEY`, `DEEPSEEK_API_KEY`, `DOUBAO_API_KEY`, `QWEN_API_KEY`, `DASHSCOPE_API_KEY`, or legacy `OPENAI_API_KEY`
 
 Useful flags:
 

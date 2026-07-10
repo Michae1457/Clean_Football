@@ -31,6 +31,12 @@ const profileIcons = {
   tactician: BrainCircuit
 };
 
+type AgentReply = {
+  content?: string;
+  error?: string;
+  mode?: "ai" | "fallback";
+};
+
 export function AgentChat() {
   const [activeProfileId, setActiveProfileId] =
     useState<AgentProfileId>(defaultAgentProfileId);
@@ -94,13 +100,13 @@ export function AgentChat() {
         throw new Error(`Agent request failed: ${response.status}`);
       }
 
-      const reply = (await response.json()) as { content?: string };
+      const reply = (await response.json()) as AgentReply;
+      const errorNote = reply.error ? `\n\n错误诊断：${reply.error}` : "";
       setMessages((currentMessages) => [
         ...currentMessages,
         {
           content:
-            reply.content ||
-            "我这边没有生成有效回复。可以换个问法，或先同步一下新闻和赛程。",
+            `${reply.content || "我这边没有生成有效回复。可以换个问法，或先同步一下新闻和赛程。"}${errorNote}`,
           id: `a-${Date.now()}`,
           role: "assistant"
         }
@@ -110,8 +116,7 @@ export function AgentChat() {
       setMessages((currentMessages) => [
         ...currentMessages,
         {
-          content:
-            "这次请求没发出去。我先提醒一下：可以检查本地服务、网络或 API 配置；没有 AI key 时也应该能走本地 fallback。",
+          content: `这次请求没发出去。我先提醒一下：可以检查本地服务、网络或 API 配置；没有 AI key 时也应该能走本地 fallback。\n\n错误诊断：${toErrorMessage(error)}`,
           id: `a-${Date.now()}`,
           role: "assistant"
         }
@@ -259,6 +264,14 @@ export function AgentChat() {
       </div>
     </section>
   );
+}
+
+function toErrorMessage(error: unknown) {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return String(error);
 }
 
 function ChatBubble({ message }: { message: AgentMessage }) {

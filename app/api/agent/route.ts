@@ -35,6 +35,7 @@ export async function POST(request: Request) {
       {
         content:
           "这次回答生成失败了。你可以稍后再试，或者先同步新闻和赛程数据。",
+        error: error instanceof Error ? error.message : String(error),
         mode: "fallback"
       } satisfies AgentReply,
       { status: 200 }

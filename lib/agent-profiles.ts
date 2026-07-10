@@ -18,7 +18,7 @@ export type AgentProfile = {
   shortTitle: string;
   description: string;
   accent: string;
-  provider: "qwen" | "deepseek" | "openrouter";
+  provider: "qwen" | "deepseek" | "openrouter" | "doubao";
   defaultModel: string;
   envPrefix: string;
   promptPath: string;
