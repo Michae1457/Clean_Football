@@ -27,7 +27,7 @@ export function NewsFeed({ articles }: { articles: Article[] }) {
 
   return (
     <div className="space-y-5">
-      <div className="flex gap-2 overflow-x-auto pb-1">
+      <div className="flex gap-3 overflow-x-auto pb-1">
         {filters.map((filter) => {
           const active = activeFilter === filter;
 
@@ -35,8 +35,8 @@ export function NewsFeed({ articles }: { articles: Article[] }) {
             <button
               aria-pressed={active}
               className={cn(
-                "h-9 shrink-0 rounded-lg border bg-card px-4 text-sm font-medium text-muted transition-colors hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-                active && "bg-accent text-black hover:text-black"
+                "interactive-control stadium-button h-12 shrink-0 rounded-lg border px-5 text-sm font-bold text-muted hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                active && "active-tab border-transparent text-black hover:text-black"
               )}
               key={filter}
               onClick={() => setActiveFilter(filter)}

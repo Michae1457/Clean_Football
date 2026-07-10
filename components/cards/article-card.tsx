@@ -4,10 +4,10 @@ import type { Article } from "@/lib/types";
 
 export function ArticleCard({ article }: { article: Article }) {
   return (
-    <article className="rounded-lg border bg-card p-4 transition-colors hover:border-accent">
+    <article className="match-surface rounded-lg border bg-card p-5">
       <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
         <div className="flex min-w-0 max-w-full items-center gap-2">
-          <span className="rounded-full bg-accent px-2 py-1 font-medium text-black">
+          <span className="accent-badge rounded-full bg-accent px-2.5 py-1 font-semibold text-black">
             {article.tag}
           </span>
           <span className="truncate text-muted">{article.source}</span>
@@ -19,14 +19,14 @@ export function ArticleCard({ article }: { article: Article }) {
         className="mt-4 block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         href={`/news/${article.id}`}
       >
-        <h2 className="text-lg font-semibold leading-snug text-text">
+        <h2 className="text-xl font-bold leading-snug text-text">
           {article.title}
         </h2>
         <p className="mt-3 text-sm leading-6 text-muted">{article.summary}</p>
       </Link>
       {article.url ? (
         <a
-          className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-text transition-colors hover:text-accent"
+          className="interactive-control mt-4 inline-flex items-center gap-2 text-sm font-medium text-text hover:text-accent"
           href={article.url}
           rel="noreferrer"
           target="_blank"
@@ -35,7 +35,7 @@ export function ArticleCard({ article }: { article: Article }) {
           <ExternalLink className="size-4" />
         </a>
       ) : (
-        <button className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-text transition-colors hover:text-accent">
+        <button className="interactive-control mt-4 inline-flex items-center gap-2 text-sm font-medium text-text hover:text-accent">
           阅读摘要
           <ExternalLink className="size-4" />
         </button>

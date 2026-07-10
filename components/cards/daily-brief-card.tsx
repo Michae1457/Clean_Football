@@ -4,16 +4,16 @@ import type { DailyBrief } from "@/lib/types";
 export function DailyBriefCard({ brief }: { brief: DailyBrief | null }) {
   if (!brief) {
     return (
-      <section className="rounded-lg border bg-card p-5 shadow-card">
+      <section className="featured-surface match-surface rounded-lg border bg-card p-5 shadow-card">
         <div className="noise-line mb-5 h-1.5 rounded-full" />
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-xs font-medium text-muted">今日简报</p>
-            <h2 className="mt-2 text-2xl font-semibold leading-tight text-text">
+            <h2 className="mt-2 text-2xl font-black leading-tight text-text">
               简报还没生成
             </h2>
           </div>
-          <div className="flex size-11 shrink-0 items-center justify-center rounded-lg border bg-background text-muted">
+          <div className="stadium-button flex size-12 shrink-0 items-center justify-center rounded-lg border text-muted">
             <CheckCircle2 className="size-5" />
           </div>
         </div>
@@ -25,16 +25,16 @@ export function DailyBriefCard({ brief }: { brief: DailyBrief | null }) {
   }
 
   return (
-    <section className="rounded-lg border bg-card p-5 shadow-card">
+    <section className="featured-surface match-surface rounded-lg border bg-card p-5 shadow-card">
       <div className="noise-line mb-5 h-1.5 rounded-full" />
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-xs font-medium text-muted">{brief.date}</p>
-          <h2 className="mt-2 text-2xl font-semibold leading-tight text-text">
+          <h2 className="mt-2 text-2xl font-black leading-tight text-text">
             {brief.title}
           </h2>
         </div>
-        <div className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-accent text-black">
+        <div className="accent-badge flex size-12 shrink-0 items-center justify-center rounded-lg bg-accent text-black">
           <CheckCircle2 className="size-5" />
         </div>
       </div>

@@ -23,8 +23,8 @@ export default async function TodayPage() {
       <section>
         <div className="mb-3 flex items-end justify-between gap-3">
           <div>
-            <p className="text-xs font-medium text-muted">Today matches</p>
-            <h2 className="mt-1 text-xl font-semibold text-text">今日赛程</h2>
+            <p className="text-xs font-semibold text-muted">Today matches</p>
+            <h2 className="mt-1 text-2xl font-black text-text">今日赛程</h2>
           </div>
           <span className="text-sm text-muted">{todayMatches.length} 场</span>
         </div>
@@ -45,8 +45,8 @@ export default async function TodayPage() {
       <section>
         <div className="mb-3 flex items-end justify-between gap-3">
           <div>
-            <p className="text-xs font-medium text-muted">Top news</p>
-            <h2 className="mt-1 text-xl font-semibold text-text">重点新闻</h2>
+            <p className="text-xs font-semibold text-muted">Top news</p>
+            <h2 className="mt-1 text-2xl font-black text-text">重点新闻</h2>
           </div>
           <span className="text-sm text-muted">{articles.length} 条</span>
         </div>
@@ -65,11 +65,11 @@ export default async function TodayPage() {
       </section>
 
       <section>
-        <h2 className="mb-3 text-xl font-semibold text-text">快捷提问</h2>
-        <div className="grid gap-2 sm:grid-cols-3">
+        <h2 className="mb-3 text-2xl font-black text-text">快捷提问</h2>
+        <div className="grid gap-3 sm:grid-cols-3">
           {quickQuestions.map((question) => (
             <div
-              className="rounded-lg border bg-card px-4 py-3 text-sm font-medium text-text"
+              className="prompt-chip rounded-full border px-4 py-3 text-sm font-bold text-text"
               key={question}
             >
               {question}

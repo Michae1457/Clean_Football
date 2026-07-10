@@ -180,10 +180,10 @@ export function AgentChat({
       </section>
 
       <div className="min-w-0 shrink-0 space-y-3">
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-3">
           {activeProfile.presets.map((preset) => (
             <button
-              className="h-9 rounded-full border bg-card px-3 text-xs font-medium text-text transition-colors hover:border-[color:var(--agent-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="interactive-control prompt-chip h-10 rounded-full border px-4 text-xs font-bold text-text hover:border-[color:var(--agent-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               key={preset.label}
               onClick={() => setDraft(preset.prompt)}
               type="button"
@@ -193,12 +193,12 @@ export function AgentChat({
           ))}
         </div>
 
-        <div className="min-w-0 rounded-lg border bg-card p-3">
+        <div className="agent-composer match-surface min-w-0 rounded-lg border bg-card p-4">
           <label className="sr-only" htmlFor="agent-message">
             输入问题
           </label>
           <textarea
-            className="max-h-40 min-h-24 w-full resize-none bg-transparent text-sm leading-6 text-text outline-none placeholder:text-muted"
+            className="max-h-40 min-h-28 w-full resize-none bg-transparent text-base leading-7 text-text outline-none placeholder:text-muted"
             id="agent-message"
             onChange={(event) => setDraft(event.target.value)}
             onKeyDown={handleDraftKeyDown}
@@ -209,8 +209,9 @@ export function AgentChat({
             <div className="flex min-w-0 flex-1 items-center gap-2 text-xs text-muted">
               <button
                 aria-pressed={webSearchEnabled}
+                aria-label="Web Search"
                 className={cn(
-                  "inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border px-2.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                  "interactive-control stadium-button inline-flex size-10 shrink-0 items-center justify-center rounded-lg border text-xs font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
                   webSearchEnabled
                     ? "border-[color:var(--agent-accent)] bg-[color:color-mix(in_srgb,var(--agent-accent)_16%,var(--card))] text-text"
                     : "bg-background text-muted hover:text-text"
@@ -220,7 +221,6 @@ export function AgentChat({
                 type="button"
               >
                 <Globe2 className="size-3.5" />
-                <span className="hidden min-[360px]:inline">Web Search</span>
               </button>
               <ShieldCheck className="size-4 shrink-0 text-[color:var(--agent-accent)]" />
               <span className="hidden truncate sm:inline">
@@ -231,12 +231,12 @@ export function AgentChat({
               <button
                 aria-expanded={selectorOpen}
                 aria-label={`当前模式：${activeProfile.name}`}
-                className="inline-flex h-10 items-center gap-1 rounded-full border bg-background px-2 text-sm font-medium text-text transition-colors hover:border-[color:var(--agent-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:gap-2 sm:px-3"
+                className="interactive-control stadium-button inline-flex h-11 max-w-[11rem] items-center gap-1.5 rounded-full border px-3 text-sm font-bold text-text hover:border-[color:var(--agent-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:gap-2 sm:px-4"
                 onClick={() => setSelectorOpen((open) => !open)}
                 type="button"
               >
                 <Icon className="size-4 text-[color:var(--agent-accent)]" />
-                <span className="hidden sm:inline">{activeProfile.name}</span>
+                <span className="min-w-0 truncate">{activeProfile.name}</span>
                 <ChevronDown
                   className={cn(
                     "size-4 text-muted transition-transform",
@@ -246,7 +246,7 @@ export function AgentChat({
               </button>
 
               {selectorOpen ? (
-                <div className="absolute bottom-12 right-0 z-10 w-56 max-w-[calc(100vw-2rem)] overflow-hidden rounded-lg border bg-card p-1 shadow-card">
+                <div className="match-surface absolute bottom-14 right-0 z-10 w-56 max-w-[calc(100vw-2rem)] overflow-hidden rounded-lg border bg-card p-1 shadow-card">
                   {profiles.map((profile) => {
                     const ProfileIcon = profileIcons[profile.id];
                     const active = profile.id === activeProfile.id;
@@ -254,7 +254,7 @@ export function AgentChat({
                     return (
                       <button
                         className={cn(
-                          "flex w-full items-start gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                          "interactive-control flex w-full items-start gap-3 rounded-lg px-3 py-2 text-left hover:bg-background/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
                           active && "bg-background"
                         )}
                         key={profile.id}
@@ -289,10 +289,11 @@ export function AgentChat({
               <Button
                 disabled={!draft.trim() || isPending}
                 onClick={sendDraft}
+                className="size-14 rounded-lg"
                 size="icon"
                 type="button"
               >
-                <SendHorizontal className="size-4" />
+                <SendHorizontal className="size-5" />
                 <span className="sr-only">发送</span>
               </Button>
             </div>
@@ -332,7 +333,7 @@ function ChatBubble({ message }: { message: AgentMessage }) {
           "max-w-[min(88%,100%)] break-words whitespace-pre-line rounded-lg border px-4 py-3 text-sm leading-6",
           message.role === "user"
             ? "border-[color:var(--agent-accent)] bg-[color:color-mix(in_srgb,var(--agent-accent)_18%,var(--card))] text-text"
-            : "bg-card text-text"
+            : "match-surface bg-card text-text"
         )}
       >
         {message.content}
