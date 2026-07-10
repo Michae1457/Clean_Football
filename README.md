@@ -162,6 +162,9 @@ AI_MODEL=
 AI_ENABLE_ARTICLE_SUMMARY=true
 AI_ENABLE_DAILY_BRIEF=true
 AI_ENABLE_AGENT=true
+AGENT_WEB_SEARCH_ENABLED=true
+AGENT_WEB_SEARCH_MAX_RESULTS=5
+TAVILY_API_KEY=
 ```
 
 中文摘要和每日简报默认跟随全局 `AI_PROVIDER` / `AI_MODEL`。如果要单独切换，可以覆盖任务级配置：
@@ -188,7 +191,11 @@ AGENT_PREDICTOR_MODEL=~openai/gpt-latest
 
 AGENT_FRIEND_PROVIDER=doubao
 AGENT_FRIEND_MODEL=你的火山方舟 endpoint id 或模型名
+
+AGENT_PREDICTOR_DAILY_LIMIT=1
 ```
+
+Agent 联网搜索使用 Tavily。配置 `TAVILY_API_KEY` 后，Agent 会把联网搜索结果作为额外上下文；没有配置时仍然只使用站内赛程、新闻和简报。预测大师默认每天最多 1 次 AI 请求，用来控制高价模型成本；这个计数依赖 Supabase migration `202607100001_add_agent_daily_usage.sql`。
 
 豆包 / 火山方舟使用 OpenAI-compatible 接口：
 

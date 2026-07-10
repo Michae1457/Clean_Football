@@ -9,8 +9,13 @@ import {
   type AgentProfile,
   type AgentProfileId
 } from "@/lib/agent-profiles";
+import { consumeAgentDailyLimit } from "@/lib/agent-rate-limit";
 import { getAgentToolContext, type AgentToolContext } from "@/lib/agent-tools";
 import type { Article, Match } from "@/lib/types";
+import {
+  searchFootballWeb,
+  type WebSearchResult
+} from "@/lib/web-search";
 
 export type AgentReply = {
   content: string;
@@ -29,12 +34,32 @@ export async function answerAgentQuestion({
 }): Promise<AgentReply> {
   const profile = getAgentProfile(agentId);
   const latestQuestion = latestUserMessage(messages);
-  const context = await getAgentToolContext(latestQuestion);
+  const [context, webResults] = await Promise.all([
+    getAgentToolContext(latestQuestion),
+    searchFootballWeb(latestQuestion).catch((error) => {
+      console.error(error);
+      return [];
+    })
+  ]);
+
+  if (profile.id === "predictor") {
+    const limit = await consumeAgentDailyLimit(profile.id).catch((error) => {
+      console.error(error);
+      return { allowed: false, maxRequests: 1 };
+    });
+
+    if (!limit.allowed) {
+      return {
+        content: `预测大师今天的 AI 请求次数已经用完了。为了控制高价模型成本，这个模式每天最多 ${limit.maxRequests} 次。你可以先切到懂球朋友或战术专家继续聊，我会继续遵守不编数据、不提供投注建议的边界。`,
+        mode: "fallback"
+      };
+    }
+  }
 
   try {
     const completion = await createChatCompletion({
       agentId: profile.id,
-      messages: buildAiMessages(profile, messages, context),
+      messages: buildAiMessages(profile, messages, context, webResults),
       task: "agent",
       temperature: profile.id === "predictor" ? 0.15 : 0.25,
       throwOnDisabled: true
@@ -72,13 +97,18 @@ export function parseAgentId(value: unknown): AgentProfileId {
 function buildAiMessages(
   profile: AgentProfile,
   messages: AgentMessage[],
-  context: AgentToolContext
+  context: AgentToolContext,
+  webResults: WebSearchResult[]
 ): AiChatMessage[] {
   return [
     {
       role: "system",
-      content: `${readAgentPrompt(profile)}\n\n当前可用数据如下，只能基于这些数据回答：\n${JSON.stringify(
+      content: `${readAgentPrompt(profile)}\n\n知识边界：\n- 用户询问足球规则、术语、历史常识、球员庆祝动作、战术概念、观赛入门等通用足球知识时，可以基于你的通用知识回答。\n- 用户询问“今天/现在/最新/这场/这队最近/伤病/首发/转会是否完成”等实时或当前状态时，优先基于下面提供的站内实时数据和联网搜索结果回答。\n- 使用联网搜索结果时，必须明确说“联网搜索显示”或点出来源名称；如果搜索结果不足，不要补事实。\n- 如果通用知识和当前数据冲突，优先说明当前数据有限，不要编造实时事实。\n\n当前可用站内实时数据如下：\n${JSON.stringify(
         toCompactContext(context),
+        null,
+        2
+      )}\n\n联网搜索结果如下：\n${JSON.stringify(
+        toCompactWebResults(webResults),
         null,
         2
       )}`
@@ -171,6 +201,15 @@ function toCompactContext(context: AgentToolContext) {
     todayBrief: context.todayBrief ?? { status: "missing" },
     todayMatches: context.todayMatches.slice(0, 8).map(toMatchSummary)
   };
+}
+
+function toCompactWebResults(results: WebSearchResult[]) {
+  return results.map((result) => ({
+    content: result.content,
+    publishedDate: result.publishedDate,
+    title: result.title,
+    url: result.url
+  }));
 }
 
 function toArticleSummary(article: Article) {
