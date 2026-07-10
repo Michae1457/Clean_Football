@@ -186,10 +186,44 @@ export function resolveAiDisplayConfig(
 
   return {
     enabled: true,
-    model: config.model,
+    model: formatAiModelForDisplay(config.model),
     provider: config.provider
   };
 }
+
+export function formatAiModelForDisplay(model: string) {
+  const normalized = model.trim();
+  const mappedModel = modelDisplayNames[normalized];
+
+  if (mappedModel) {
+    return mappedModel;
+  }
+
+  const cleanModel = normalized.replace(/^~/, "");
+
+  return (
+    modelDisplayNames[cleanModel] ??
+    cleanModel
+      .split("/")
+      .at(-1)
+      ?.split("-")
+      .map((part) => (part.length <= 3 ? part.toUpperCase() : capitalize(part)))
+      .join(" ") ??
+    normalized
+  );
+}
+
+const modelDisplayNames: Record<string, string> = {
+  "anthropic/claude-opus-latest": "Claude Opus Latest",
+  "deepseek-v4-flash": "DeepSeek-V4-flash",
+  "ep-20260710191253-qjgjl": "Doubao-Seed-2.1-turbo",
+  "ep-20260710192417-c4f8b": "Doubao-Seed-2.1-pro",
+  "ep-20260710201144-bj9lj": "DeepSeek-V4-pro",
+  "ep-20260710201212-wntss": "DeepSeek-V4-flash",
+  "openai/gpt-4o-mini": "GPT-4o mini",
+  "qwen-plus": "Qwen Plus",
+  "~anthropic/claude-opus-latest": "Claude Opus Latest"
+};
 
 function resolvePresetProvider(
   provider: Exclude<AiProvider, "off" | "custom">,
@@ -418,6 +452,10 @@ function warnOnce(message: string) {
     console.warn(message);
     warnedMessages.add(message);
   }
+}
+
+function capitalize(value: string) {
+  return value ? `${value.charAt(0).toUpperCase()}${value.slice(1)}` : value;
 }
 
 function truncate(value: string, maxLength: number) {

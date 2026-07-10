@@ -201,7 +201,7 @@ export function AgentChat({
             <div className="flex min-w-0 items-center gap-2 text-xs text-muted">
               <ShieldCheck className="size-4 shrink-0 text-[color:var(--agent-accent)]" />
               <span className="hidden truncate min-[380px]:inline">
-                不编数据，不给投注建议
+                常识可聊，实时不编，不给投注建议
               </span>
             </div>
             <div className="relative flex shrink-0 items-center gap-2">
@@ -253,8 +253,8 @@ export function AgentChat({
                           </span>
                           <span className="mt-0.5 block truncate text-xs text-muted">
                             {profile.runtimeReason
-                              ? `off · ${profile.runtimeReason}`
-                              : `${profile.runtimeProvider} · ${profile.runtimeModel}`}
+                              ? profile.runtimeReason
+                              : profile.runtimeModel}
                           </span>
                         </span>
                       </button>
