@@ -72,7 +72,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
 
-      <nav className="-mx-4 shrink-0 border-t bg-background/92 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur">
+      <nav className="-mx-4 shrink-0 border-t bg-background/92 px-3 pb-[var(--app-bottom-safe-padding)] pt-2 backdrop-blur">
         <div className="mx-auto grid max-w-3xl grid-cols-4 gap-2">
           {navItems.map((item) => {
             const Icon = item.icon;
