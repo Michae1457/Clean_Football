@@ -29,6 +29,18 @@ export type ChatCompletionResult = {
   provider: Exclude<AiProvider, "off">;
 };
 
+export type AiDisplayConfig =
+  | {
+      enabled: true;
+      model: string;
+      provider: Exclude<AiProvider, "off">;
+    }
+  | {
+      enabled: false;
+      provider: "off";
+      reason: string;
+    };
+
 type ResolvedAiConfig =
   | {
       enabled: true;
@@ -156,6 +168,27 @@ export function resolveAiConfig(task: AiTask, agentId?: string): ResolvedAiConfi
   }
 
   return resolvePresetProvider(provider, agentPrefix, taskPrefix);
+}
+
+export function resolveAiDisplayConfig(
+  task: AiTask,
+  agentId?: string
+): AiDisplayConfig {
+  const config = resolveAiConfig(task, agentId);
+
+  if (!config.enabled) {
+    return {
+      enabled: false,
+      provider: "off",
+      reason: config.reason
+    };
+  }
+
+  return {
+    enabled: true,
+    model: config.model,
+    provider: config.provider
+  };
 }
 
 function resolvePresetProvider(

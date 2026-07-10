@@ -21,6 +21,7 @@ import {
   agentProfiles,
   defaultAgentProfileId,
   type AgentMessage,
+  type AgentProfile,
   type AgentProfileId
 } from "@/lib/agent-profiles";
 import { cn } from "@/lib/utils";
@@ -37,7 +38,17 @@ type AgentReply = {
   mode?: "ai" | "fallback";
 };
 
-export function AgentChat() {
+export type AgentDisplayProfile = AgentProfile & {
+  runtimeModel: string;
+  runtimeProvider: string;
+  runtimeReason?: string;
+};
+
+export function AgentChat({
+  profiles = toDisplayProfiles(agentProfiles)
+}: {
+  profiles?: AgentDisplayProfile[];
+}) {
   const [activeProfileId, setActiveProfileId] =
     useState<AgentProfileId>(defaultAgentProfileId);
   const [selectorOpen, setSelectorOpen] = useState(false);
@@ -47,9 +58,10 @@ export function AgentChat() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const activeProfile = useMemo(
     () =>
-      agentProfiles.find((profile) => profile.id === activeProfileId) ??
-      agentProfiles[0],
-    [activeProfileId]
+      profiles.find((profile) => profile.id === activeProfileId) ??
+      profiles[0] ??
+      toDisplayProfiles(agentProfiles)[0],
+    [activeProfileId, profiles]
   );
   const Icon = profileIcons[activeProfile.id];
 
@@ -212,7 +224,7 @@ export function AgentChat() {
 
               {selectorOpen ? (
                 <div className="absolute bottom-12 right-0 z-10 w-56 overflow-hidden rounded-lg border bg-card p-1 shadow-card">
-                  {agentProfiles.map((profile) => {
+                  {profiles.map((profile) => {
                     const ProfileIcon = profileIcons[profile.id];
                     const active = profile.id === activeProfile.id;
 
@@ -240,7 +252,9 @@ export function AgentChat() {
                             {profile.name}
                           </span>
                           <span className="mt-0.5 block truncate text-xs text-muted">
-                            {profile.defaultModel}
+                            {profile.runtimeReason
+                              ? `off · ${profile.runtimeReason}`
+                              : `${profile.runtimeProvider} · ${profile.runtimeModel}`}
                           </span>
                         </span>
                       </button>
@@ -264,6 +278,14 @@ export function AgentChat() {
       </div>
     </section>
   );
+}
+
+function toDisplayProfiles(profiles: AgentProfile[]): AgentDisplayProfile[] {
+  return profiles.map((profile) => ({
+    ...profile,
+    runtimeModel: profile.defaultModel,
+    runtimeProvider: profile.provider
+  }));
 }
 
 function toErrorMessage(error: unknown) {
