@@ -153,7 +153,7 @@ async function sendPushToEnabledSubscriptions(payload: PushPayload) {
 function configureWebPush() {
   const publicKey = process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY;
   const privateKey = process.env.WEB_PUSH_PRIVATE_KEY;
-  const subject = process.env.WEB_PUSH_SUBJECT;
+  const subject = normalizeVapidSubject(process.env.WEB_PUSH_SUBJECT);
 
   if (!publicKey || !privateKey || !subject) {
     throw new Error(
@@ -162,6 +162,22 @@ function configureWebPush() {
   }
 
   webPush.setVapidDetails(subject, publicKey, privateKey);
+}
+
+function normalizeVapidSubject(subject?: string) {
+  if (!subject) {
+    return subject;
+  }
+
+  if (subject.includes("://") || subject.startsWith("mailto:")) {
+    return subject;
+  }
+
+  if (subject.includes("@")) {
+    return `mailto:${subject}`;
+  }
+
+  return subject;
 }
 
 function toWebPushSubscription(row: PushSubscriptionRow): PushSubscription {
