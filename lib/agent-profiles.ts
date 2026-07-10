@@ -52,6 +52,10 @@ export const agentProfiles: AgentProfile[] = [
       {
         label: "英超有什么新消息？",
         prompt: "帮我看看英超今天有什么值得关注的新消息。"
+      },
+      {
+        label: "解释一个足球梗",
+        prompt: "帮我解释一个足球梗或庆祝动作，比如 siuuu 是什么？"
       }
     ],
     openingMessages: [
@@ -87,6 +91,10 @@ export const agentProfiles: AgentProfile[] = [
       {
         label: "弱点雷达",
         prompt: "帮我找一场比赛双方可能暴露的问题，只说能从现有信息推出的部分。"
+      },
+      {
+        label: "战术术语速查",
+        prompt: "用简单中文解释一个战术术语，比如高位压迫、肋部空间或倒三角。"
       }
     ],
     openingMessages: [
@@ -122,6 +130,10 @@ export const agentProfiles: AgentProfile[] = [
       {
         label: "赛前风险清单",
         prompt: "列一个赛前风险清单：哪些信息缺失会影响判断？"
+      },
+      {
+        label: "概念解释",
+        prompt: "解释一下什么叫冷门风险，以及它和预测胜负有什么区别。"
       }
     ],
     openingMessages: [

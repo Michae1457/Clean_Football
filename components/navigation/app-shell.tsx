@@ -6,11 +6,11 @@ import { MessageCircle, Newspaper, Settings, Sparkles, Trophy } from "lucide-rea
 import { NewsRefreshButton } from "@/components/news/news-refresh-button";
 import { cn } from "@/lib/utils";
 
-const pageMeta: Record<string, { title: string; eyebrow: string }> = {
+const pageMeta: Record<string, { title: string; eyebrow?: string }> = {
   "/today": { title: "今日", eyebrow: "9 点简报" },
   "/matches": { title: "赛程", eyebrow: "昨日 / 今日 / 明日" },
   "/news": { title: "新闻", eyebrow: "中文摘要流" },
-  "/agent": { title: "聊球", eyebrow: "只基于已有信息" },
+  "/agent": { title: "聊球" },
   "/settings": { title: "设置", eyebrow: "主题与关注项" }
 };
 
@@ -33,8 +33,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <header className="z-20 -mx-4 shrink-0 border-b bg-background/88 px-4 py-4 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-xs font-medium text-muted">{meta.eyebrow}</p>
-            <h1 className="mt-1 text-2xl font-semibold leading-tight text-text">
+            {meta.eyebrow ? (
+              <p className="text-xs font-medium text-muted">{meta.eyebrow}</p>
+            ) : null}
+            <h1
+              className={cn(
+                "text-2xl font-semibold leading-tight text-text",
+                meta.eyebrow && "mt-1"
+              )}
+            >
               {meta.title}
             </h1>
           </div>
