@@ -150,14 +150,17 @@ export function AgentChat({
 
   return (
     <section
-      className="flex min-h-0 flex-1 flex-col gap-3"
+      className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3"
       style={
         {
           "--agent-accent": activeProfile.accent
         } as CSSProperties
       }
     >
-      <section className="min-h-0 flex-1 overflow-y-auto pr-1" ref={scrollRef}>
+      <section
+        className="min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden"
+        ref={scrollRef}
+      >
         <div className="space-y-3 pb-2">
           {messages.map((message) => (
             <ChatBubble key={message.id} message={message} />
@@ -176,11 +179,11 @@ export function AgentChat({
         </div>
       </section>
 
-      <div className="shrink-0 space-y-3">
-        <div className="flex gap-2 overflow-x-auto pb-1">
+      <div className="min-w-0 shrink-0 space-y-3">
+        <div className="flex flex-wrap gap-2">
           {activeProfile.presets.map((preset) => (
             <button
-              className="h-9 shrink-0 rounded-full border bg-card px-3 text-xs font-medium text-text transition-colors hover:border-[color:var(--agent-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="h-9 rounded-full border bg-card px-3 text-xs font-medium text-text transition-colors hover:border-[color:var(--agent-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               key={preset.label}
               onClick={() => setDraft(preset.prompt)}
               type="button"
@@ -190,7 +193,7 @@ export function AgentChat({
           ))}
         </div>
 
-        <div className="rounded-lg border bg-card p-3">
+        <div className="min-w-0 rounded-lg border bg-card p-3">
           <label className="sr-only" htmlFor="agent-message">
             输入问题
           </label>
@@ -202,8 +205,8 @@ export function AgentChat({
             placeholder={`${activeProfile.shortTitle}模式下提问`}
             value={draft}
           />
-          <div className="mt-3 flex items-center justify-between gap-2">
-            <div className="flex min-w-0 items-center gap-2 text-xs text-muted">
+          <div className="mt-3 flex min-w-0 items-center gap-2">
+            <div className="flex min-w-0 flex-1 items-center gap-2 text-xs text-muted">
               <button
                 aria-pressed={webSearchEnabled}
                 className={cn(
@@ -217,23 +220,23 @@ export function AgentChat({
                 type="button"
               >
                 <Globe2 className="size-3.5" />
-                Web Search
+                <span className="hidden min-[360px]:inline">Web Search</span>
               </button>
               <ShieldCheck className="size-4 shrink-0 text-[color:var(--agent-accent)]" />
-              <span className="hidden truncate min-[380px]:inline">
+              <span className="hidden truncate sm:inline">
                 常识可聊，实时不编，不给投注建议
               </span>
             </div>
-            <div className="relative flex shrink-0 items-center gap-2">
+            <div className="relative flex shrink-0 items-center gap-1.5">
               <button
                 aria-expanded={selectorOpen}
-                className="inline-flex h-10 items-center gap-1.5 rounded-full border bg-background px-2.5 text-sm font-medium text-text transition-colors hover:border-[color:var(--agent-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:gap-2 sm:px-3"
+                aria-label={`当前模式：${activeProfile.name}`}
+                className="inline-flex h-10 items-center gap-1 rounded-full border bg-background px-2 text-sm font-medium text-text transition-colors hover:border-[color:var(--agent-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:gap-2 sm:px-3"
                 onClick={() => setSelectorOpen((open) => !open)}
                 type="button"
               >
                 <Icon className="size-4 text-[color:var(--agent-accent)]" />
                 <span className="hidden sm:inline">{activeProfile.name}</span>
-                <span className="sm:hidden">{activeProfile.shortTitle}</span>
                 <ChevronDown
                   className={cn(
                     "size-4 text-muted transition-transform",
@@ -243,7 +246,7 @@ export function AgentChat({
               </button>
 
               {selectorOpen ? (
-                <div className="absolute bottom-12 right-0 z-10 w-56 overflow-hidden rounded-lg border bg-card p-1 shadow-card">
+                <div className="absolute bottom-12 right-0 z-10 w-56 max-w-[calc(100vw-2rem)] overflow-hidden rounded-lg border bg-card p-1 shadow-card">
                   {profiles.map((profile) => {
                     const ProfileIcon = profileIcons[profile.id];
                     const active = profile.id === activeProfile.id;
@@ -326,7 +329,7 @@ function ChatBubble({ message }: { message: AgentMessage }) {
     >
       <div
         className={cn(
-          "max-w-[88%] whitespace-pre-line rounded-lg border px-4 py-3 text-sm leading-6",
+          "max-w-[min(88%,100%)] break-words whitespace-pre-line rounded-lg border px-4 py-3 text-sm leading-6",
           message.role === "user"
             ? "border-[color:var(--agent-accent)] bg-[color:color-mix(in_srgb,var(--agent-accent)_18%,var(--card))] text-text"
             : "bg-card text-text"

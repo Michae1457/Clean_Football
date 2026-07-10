@@ -29,8 +29,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const showNewsRefresh = pathname === "/news";
 
   return (
-    <div className="mx-auto flex h-[100dvh] w-full max-w-3xl flex-col overflow-hidden px-4">
-      <header className="z-20 -mx-4 shrink-0 border-b bg-background/88 px-4 py-4 backdrop-blur">
+    <div className="mx-auto flex h-[100dvh] w-full min-w-0 max-w-3xl flex-col overflow-hidden pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]">
+      <header className="z-20 -ml-[max(1rem,env(safe-area-inset-left))] -mr-[max(1rem,env(safe-area-inset-right))] shrink-0 border-b bg-background/88 py-4 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3">
           <div className="min-w-0">
             {meta.eyebrow ? (
@@ -63,7 +63,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       <main
         className={cn(
-          "min-h-0 flex-1 overscroll-contain",
+          "min-h-0 min-w-0 flex-1 overscroll-contain",
           pathname === "/agent"
             ? "flex overflow-hidden pt-4"
             : "overflow-y-auto py-5"
@@ -72,7 +72,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
 
-      <nav className="-mx-4 shrink-0 border-t bg-background/92 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur">
+      <nav className="-ml-[max(1rem,env(safe-area-inset-left))] -mr-[max(1rem,env(safe-area-inset-right))] shrink-0 border-t bg-background/92 pb-[max(0.75rem,env(safe-area-inset-bottom))] pl-[max(0.75rem,env(safe-area-inset-left))] pr-[max(0.75rem,env(safe-area-inset-right))] pt-2 backdrop-blur">
         <div className="mx-auto grid max-w-3xl grid-cols-4 gap-2">
           {navItems.map((item) => {
             const Icon = item.icon;
