@@ -18,7 +18,7 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        "rounded-lg border bg-card px-4 py-8 text-center",
+        "match-surface rounded-lg border bg-card px-4 py-8 text-center",
         className
       )}
     >
@@ -63,7 +63,7 @@ export function PageLoadingState() {
         <LoaderCircle className="size-4 animate-spin" />
         正在更新数据
       </div>
-      <div className="rounded-lg border bg-card p-5">
+      <div className="match-surface rounded-lg border bg-card p-5">
         <SkeletonLine className="h-4 w-28" />
         <SkeletonLine className="mt-4 h-8 w-4/5" />
         <SkeletonLine className="mt-4 h-4 w-full" />
@@ -79,7 +79,7 @@ export function PageLoadingState() {
 
 function SkeletonCard() {
   return (
-    <div className="rounded-lg border bg-card p-4">
+    <div className="match-surface rounded-lg border bg-card p-4">
       <div className="flex items-center justify-between gap-3">
         <SkeletonLine className="h-4 w-24" />
         <SkeletonLine className="h-4 w-16" />
@@ -95,7 +95,7 @@ function SkeletonLine({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "animate-pulse rounded-full bg-[color:color-mix(in_srgb,var(--border)_70%,transparent)]",
+        "skeleton-sheen rounded-full bg-[color:color-mix(in_srgb,var(--border)_70%,transparent)]",
         className
       )}
     />

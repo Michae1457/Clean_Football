@@ -10,12 +10,12 @@ export default function SettingsPage() {
       <ThemeSettings />
       <PushSettings />
 
-      <section className="rounded-lg border bg-card p-4">
+      <section className="match-surface rounded-lg border bg-card p-4">
         <h2 className="text-lg font-semibold text-text">关注联赛</h2>
         <div className="mt-4 flex flex-wrap gap-2">
           {leagues.map((league) => (
             <span
-              className="rounded-full border bg-background px-3 py-2 text-sm font-medium text-text"
+              className="interactive-control rounded-full border bg-background px-3 py-2 text-sm font-medium text-text"
               key={league}
             >
               {league}
@@ -24,12 +24,12 @@ export default function SettingsPage() {
         </div>
       </section>
 
-      <section className="rounded-lg border bg-card p-4">
+      <section className="match-surface rounded-lg border bg-card p-4">
         <h2 className="text-lg font-semibold text-text">关注球队</h2>
         <div className="mt-4 flex flex-wrap gap-2">
           {teams.map((team) => (
             <span
-              className="rounded-full border bg-background px-3 py-2 text-sm font-medium text-text"
+              className="interactive-control rounded-full border bg-background px-3 py-2 text-sm font-medium text-text"
               key={team}
             >
               {team}
@@ -38,13 +38,13 @@ export default function SettingsPage() {
         </div>
       </section>
 
-      <section className="rounded-lg border bg-card p-4">
+      <section className="match-surface rounded-lg border bg-card p-4">
         <div className="flex items-center justify-between gap-4">
           <div>
             <h2 className="text-lg font-semibold text-text">简报时间</h2>
             <p className="mt-1 text-sm text-muted">每天早上推送</p>
           </div>
-          <span className="rounded-lg border bg-background px-4 py-3 font-mono text-lg font-semibold text-text">
+          <span className="score-chip rounded-lg border bg-background px-4 py-3 font-mono text-lg font-semibold text-text">
             09:00
           </span>
         </div>

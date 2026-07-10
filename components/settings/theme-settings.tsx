@@ -19,7 +19,7 @@ export function ThemeSettings() {
   }, []);
 
   return (
-    <section className="rounded-lg border bg-card p-4">
+    <section className="match-surface rounded-lg border bg-card p-4">
       <h2 className="text-lg font-semibold text-text">主题</h2>
       <div className="mt-4 grid grid-cols-2 gap-2">
         {themes.map((item) => {
@@ -29,8 +29,8 @@ export function ThemeSettings() {
           return (
             <button
               className={cn(
-                "flex h-16 items-center justify-center gap-2 rounded-lg border bg-background text-sm font-medium text-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-                active && "border-accent text-text"
+                "interactive-control flex h-16 items-center justify-center gap-2 rounded-lg border bg-background text-sm font-medium text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                active && "active-tab border-accent text-text"
               )}
               key={item.value}
               onClick={() => setTheme(item.value)}

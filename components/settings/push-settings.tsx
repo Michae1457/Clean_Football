@@ -165,9 +165,9 @@ export function PushSettings() {
   }
 
   return (
-    <section className="rounded-lg border bg-card p-4">
+    <section className="match-surface rounded-lg border bg-card p-4">
       <div className="flex items-start gap-3">
-        <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border bg-background text-accent">
+        <div className="accent-badge flex size-10 shrink-0 items-center justify-center rounded-lg border bg-background text-accent">
           <Smartphone className="size-5" />
         </div>
         <div className="min-w-0 flex-1">
