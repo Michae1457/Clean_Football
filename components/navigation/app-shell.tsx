@@ -27,35 +27,45 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     pageMeta[pathname] ??
     (pathname.startsWith("/news/") ? pageMeta["/news"] : pageMeta["/today"]);
   const showNewsRefresh = pathname === "/news";
+  const pageKey = getPageKey(pathname);
+  const showStatusDot = pageKey !== "settings";
 
   return (
-    <div className="fixed inset-0 mx-auto flex w-full min-w-0 max-w-3xl flex-col overflow-hidden px-4">
-      <header className="z-20 -mx-4 shrink-0 border-b bg-background/88 px-4 pb-4 pt-[calc(env(safe-area-inset-top)+1rem)] backdrop-blur">
-        <div className="mx-auto flex max-w-3xl items-center justify-between gap-3">
+    <div className="app-frame fixed inset-0 mx-auto flex w-full min-w-0 max-w-3xl flex-col overflow-hidden px-4">
+      <header
+        className={cn(
+          "pitch-header chrome-rail z-20 -mx-4 shrink-0 border-b px-6 pb-6 pt-[calc(env(safe-area-inset-top)+1.35rem)] backdrop-blur",
+          `pitch-header--${pageKey}`
+        )}
+      >
+        <div className="mx-auto flex h-full max-w-3xl items-center justify-between gap-4">
           <div className="min-w-0">
             {meta.eyebrow ? (
-              <p className="text-xs font-medium text-muted">{meta.eyebrow}</p>
+              <p className="text-sm font-semibold text-muted">{meta.eyebrow}</p>
             ) : null}
-            <h1
+            <div
               className={cn(
-                "text-2xl font-semibold leading-tight text-text",
+                "flex items-center gap-3",
                 meta.eyebrow && "mt-1"
               )}
             >
-              {meta.title}
-            </h1>
+              <h1 className="text-4xl font-black leading-none text-text">
+                {meta.title}
+              </h1>
+              {showStatusDot ? <span aria-hidden className="status-dot" /> : null}
+            </div>
           </div>
           <div className="flex shrink-0 items-start gap-2">
             {showNewsRefresh ? <NewsRefreshButton /> : null}
             <Link
               aria-label="打开设置"
               className={cn(
-                "inline-flex size-10 shrink-0 items-center justify-center rounded-lg border bg-card text-muted transition-colors hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                "interactive-control stadium-button inline-flex size-14 shrink-0 items-center justify-center rounded-2xl border text-muted hover:border-accent hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
                 pathname === "/settings" && "border-accent text-text"
               )}
               href="/settings"
             >
-              <Settings className="size-5" />
+              <Settings className="size-6" />
             </Link>
           </div>
         </div>
@@ -72,7 +82,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
 
-      <nav className="-mx-4 shrink-0 border-t bg-background/92 px-3 pb-[var(--app-bottom-safe-padding)] pt-2 backdrop-blur">
+      <nav className="chrome-rail -mx-4 shrink-0 border-t px-3 pb-[var(--app-bottom-safe-padding)] pt-2 backdrop-blur">
         <div className="mx-auto grid max-w-3xl grid-cols-4 gap-2">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -83,8 +93,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             return (
               <Link
                 className={cn(
-                  "flex h-14 flex-col items-center justify-center gap-1 rounded-lg text-xs font-medium text-muted transition-colors hover:bg-card hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-                  active && "bg-card text-text shadow-card"
+                  "interactive-control flex h-14 flex-col items-center justify-center gap-1 rounded-lg text-xs font-medium text-muted hover:bg-card hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                  active && "active-nav bg-card text-text shadow-card"
                 )}
                 href={item.href}
                 key={item.href}
@@ -98,4 +108,24 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </nav>
     </div>
   );
+}
+
+function getPageKey(pathname: string) {
+  if (pathname.startsWith("/matches")) {
+    return "matches";
+  }
+
+  if (pathname.startsWith("/news")) {
+    return "news";
+  }
+
+  if (pathname.startsWith("/agent")) {
+    return "agent";
+  }
+
+  if (pathname.startsWith("/settings")) {
+    return "settings";
+  }
+
+  return "today";
 }
