@@ -95,6 +95,11 @@ Prompts:
 
 ## Vercel cron
 
+`app/api/cron/hourly/route.ts` refreshes match and news data every hour:
+
+1. `fetchMatches`
+2. `fetchNews`
+
 `app/api/cron/daily/route.ts` reuses these job functions in this order:
 
 1. `fetchMatches`
@@ -102,7 +107,7 @@ Prompts:
 3. `generateDailyBrief`
 4. `sendDailyBriefNotification`
 
-The route is configured in `vercel.json` to run at `0 1 * * *`, which is 09:00 in Asia/Shanghai. Production requests must include `Authorization: Bearer <CRON_SECRET>`.
+The hourly route is configured in `vercel.json` to run at `0 * * * *`. The daily route runs at `0 1 * * *`, which is 09:00 in Asia/Shanghai. Production requests must include `Authorization: Bearer <CRON_SECRET>`.
 
 Daily push notifications are skipped unless all push env vars are configured:
 

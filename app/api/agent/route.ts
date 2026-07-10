@@ -13,6 +13,7 @@ export async function POST(request: Request) {
     const body = (await request.json()) as {
       agentId?: unknown;
       messages?: unknown;
+      webSearch?: unknown;
     };
     const messages = parseMessages(body.messages);
 
@@ -25,7 +26,8 @@ export async function POST(request: Request) {
 
     const reply = await answerAgentQuestion({
       agentId: parseAgentId(body.agentId),
-      messages
+      messages,
+      webSearch: body.webSearch === true
     });
 
     return NextResponse.json<AgentReply>(reply);

@@ -27,19 +27,23 @@ export type AgentReply = {
 
 export async function answerAgentQuestion({
   agentId,
-  messages
+  messages,
+  webSearch = false
 }: {
   agentId: AgentProfileId;
   messages: AgentMessage[];
+  webSearch?: boolean;
 }): Promise<AgentReply> {
   const profile = getAgentProfile(agentId);
   const latestQuestion = latestUserMessage(messages);
   const [context, webResults] = await Promise.all([
     getAgentToolContext(latestQuestion),
-    searchFootballWeb(latestQuestion).catch((error) => {
-      console.error(error);
-      return [];
-    })
+    webSearch
+      ? searchFootballWeb(latestQuestion).catch((error) => {
+          console.error(error);
+          return [];
+        })
+      : Promise.resolve([])
   ]);
 
   if (profile.id === "predictor") {
@@ -59,7 +63,13 @@ export async function answerAgentQuestion({
   try {
     const completion = await createChatCompletion({
       agentId: profile.id,
-      messages: buildAiMessages(profile, messages, context, webResults),
+      messages: buildAiMessages(
+        profile,
+        messages,
+        context,
+        webResults,
+        webSearch
+      ),
       task: "agent",
       temperature: profile.id === "predictor" ? 0.15 : 0.25,
       throwOnDisabled: true
@@ -98,16 +108,17 @@ function buildAiMessages(
   profile: AgentProfile,
   messages: AgentMessage[],
   context: AgentToolContext,
-  webResults: WebSearchResult[]
+  webResults: WebSearchResult[],
+  webSearch: boolean
 ): AiChatMessage[] {
   return [
     {
       role: "system",
-      content: `${readAgentPrompt(profile)}\n\n知识边界：\n- 用户询问足球规则、术语、历史常识、球员庆祝动作、战术概念、观赛入门等通用足球知识时，可以基于你的通用知识回答。\n- 用户询问“今天/现在/最新/这场/这队最近/伤病/首发/转会是否完成”等实时或当前状态时，优先基于下面提供的站内实时数据和联网搜索结果回答。\n- 使用联网搜索结果时，必须明确说“联网搜索显示”或点出来源名称；如果搜索结果不足，不要补事实。\n- 如果通用知识和当前数据冲突，优先说明当前数据有限，不要编造实时事实。\n\n当前可用站内实时数据如下：\n${JSON.stringify(
+      content: `${readAgentPrompt(profile)}\n\n知识边界：\n- 用户询问足球规则、术语、历史常识、球员庆祝动作、战术概念、观赛入门等通用足球知识时，可以基于你的通用知识回答。\n- 用户询问“今天/现在/最新/这场/这队最近/伤病/首发/转会是否完成”等实时或当前状态时，优先基于下面提供的站内实时数据回答；只有用户开启联网搜索时，才可以结合联网搜索结果。\n- 使用联网搜索结果时，必须明确说“联网搜索显示”或点出来源名称；如果搜索结果不足，不要补事实。\n- 如果通用知识和当前数据冲突，优先说明当前数据有限，不要编造实时事实。\n\n当前可用站内实时数据如下：\n${JSON.stringify(
         toCompactContext(context),
         null,
         2
-      )}\n\n联网搜索结果如下：\n${JSON.stringify(
+      )}\n\n用户是否开启联网搜索：${webSearch ? "是" : "否"}\n联网搜索结果如下：\n${JSON.stringify(
         toCompactWebResults(webResults),
         null,
         2

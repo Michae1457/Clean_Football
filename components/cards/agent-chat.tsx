@@ -11,6 +11,7 @@ import {
 import {
   BrainCircuit,
   ChevronDown,
+  Globe2,
   MessageCircle,
   SendHorizontal,
   ShieldCheck,
@@ -54,6 +55,7 @@ export function AgentChat({
   const [selectorOpen, setSelectorOpen] = useState(false);
   const [draft, setDraft] = useState("");
   const [isPending, setIsPending] = useState(false);
+  const [webSearchEnabled, setWebSearchEnabled] = useState(false);
   const [messages, setMessages] = useState<AgentMessage[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const activeProfile = useMemo(
@@ -100,7 +102,8 @@ export function AgentChat({
       const response = await fetch("/api/agent", {
         body: JSON.stringify({
           agentId: activeProfile.id,
-          messages: nextMessages
+          messages: nextMessages,
+          webSearch: webSearchEnabled
         }),
         headers: {
           "content-type": "application/json"
@@ -162,7 +165,9 @@ export function AgentChat({
           {isPending ? (
             <ChatBubble
               message={{
-                content: "正在整理已有信息...",
+                content: webSearchEnabled
+                  ? "正在联网搜索并整理已有信息..."
+                  : "正在整理已有信息...",
                 id: "pending",
                 role: "assistant"
               }}
@@ -199,6 +204,21 @@ export function AgentChat({
           />
           <div className="mt-3 flex items-center justify-between gap-2">
             <div className="flex min-w-0 items-center gap-2 text-xs text-muted">
+              <button
+                aria-pressed={webSearchEnabled}
+                className={cn(
+                  "inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border px-2.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                  webSearchEnabled
+                    ? "border-[color:var(--agent-accent)] bg-[color:color-mix(in_srgb,var(--agent-accent)_16%,var(--card))] text-text"
+                    : "bg-background text-muted hover:text-text"
+                )}
+                onClick={() => setWebSearchEnabled((enabled) => !enabled)}
+                title="Web Search 会让本次提问消耗 Tavily search credit"
+                type="button"
+              >
+                <Globe2 className="size-3.5" />
+                Web Search
+              </button>
               <ShieldCheck className="size-4 shrink-0 text-[color:var(--agent-accent)]" />
               <span className="hidden truncate min-[380px]:inline">
                 常识可聊，实时不编，不给投注建议

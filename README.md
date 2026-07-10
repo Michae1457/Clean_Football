@@ -195,7 +195,7 @@ AGENT_FRIEND_MODEL=你的火山方舟 endpoint id 或模型名
 AGENT_PREDICTOR_DAILY_LIMIT=1
 ```
 
-Agent 联网搜索使用 Tavily。配置 `TAVILY_API_KEY` 后，Agent 会把联网搜索结果作为额外上下文；没有配置时仍然只使用站内赛程、新闻和简报。预测大师默认每天最多 1 次 AI 请求，用来控制高价模型成本；这个计数依赖 Supabase migration `202607100001_add_agent_daily_usage.sql`。
+Agent 联网搜索使用 Tavily。配置 `TAVILY_API_KEY` 后，用户可以在 Agent 输入框左下角手动开启 `Web Search`；只有开启后才会调用 Tavily Search 并消耗 search credit。没有配置或没有开启时，Agent 只使用站内赛程、新闻和简报。预测大师默认每天最多 1 次 AI 请求，用来控制高价模型成本；这个计数依赖 Supabase migration `202607100001_add_agent_daily_usage.sql`。
 
 豆包 / 火山方舟使用 OpenAI-compatible 接口：
 
@@ -249,6 +249,10 @@ WEB_PUSH_SUBJECT=mailto:you@example.com
 {
   "crons": [
     {
+      "path": "/api/cron/hourly",
+      "schedule": "0 * * * *"
+    },
+    {
       "path": "/api/cron/daily",
       "schedule": "0 1 * * *"
     }
@@ -256,7 +260,7 @@ WEB_PUSH_SUBJECT=mailto:you@example.com
 }
 ```
 
-`0 1 * * *` 是 UTC 时间，对应北京时间每天 09:00。
+`/api/cron/hourly` 每小时整点刷新赛程和新闻；`/api/cron/daily` 的 `0 1 * * *` 是 UTC 时间，对应北京时间每天 09:00，用于生成每日简报和推送。
 
 部署前在 Vercel Project Settings 里配置 Production 环境变量：
 
@@ -267,6 +271,8 @@ SUPABASE_SERVICE_ROLE_KEY=
 THESPORTSDB_API_KEY=123
 
 CRON_SECRET=
+CRON_HOURLY_MAX_PER_SOURCE=6
+CRON_HOURLY_NEWS_USE_AI=false
 CRON_MAX_PER_SOURCE=8
 CRON_NEWS_USE_AI=true
 CRON_BRIEF_USE_AI=true
@@ -275,11 +281,12 @@ WEB_PUSH_PRIVATE_KEY=
 WEB_PUSH_SUBJECT=mailto:you@example.com
 ```
 
-`CRON_SECRET` 建议用至少 16 位随机字符串。Vercel Cron 会通过 `Authorization: Bearer <CRON_SECRET>` 调用 `/api/cron/daily`。
+`CRON_SECRET` 建议用至少 16 位随机字符串。Vercel Cron 会通过 `Authorization: Bearer <CRON_SECRET>` 调用 cron endpoint。每小时刷新默认不做 AI 中文摘要，避免每小时消耗模型额度；如果你想让小时级新闻也直接生成中文摘要，可以把 `CRON_HOURLY_NEWS_USE_AI=true`。
 
 生产环境手动触发：
 
 ```bash
+curl -H "Authorization: Bearer $CRON_SECRET" https://your-app.vercel.app/api/cron/hourly
 curl -H "Authorization: Bearer $CRON_SECRET" https://your-app.vercel.app/api/cron/daily
 ```
 
