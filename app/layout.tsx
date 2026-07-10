@@ -45,7 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
-      <body>
+      <body suppressHydrationWarning>
         <ThemeProvider>
           <PwaProvider />
           <AppShell>{children}</AppShell>
